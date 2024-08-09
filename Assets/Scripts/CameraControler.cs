@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AISelfDrivingCar.Handlers.Camera
 {
-    public class CameraControll : MonoBehaviour
+    public class CameraControler : MonoBehaviour
     {
         public float moveSpeed = 10f;
         public float rotationSpeed = 150f;
@@ -19,6 +19,19 @@ namespace AISelfDrivingCar.Handlers.Camera
         {
             HandleMovement();
             HandleRotation();
+            ToggleCursor();
+        }
+
+        private void ToggleCursor()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
 
         private void HandleMovement()
@@ -44,7 +57,7 @@ namespace AISelfDrivingCar.Handlers.Camera
                 currentSpeed *= boostMultiplier;
             }
 
-            transform.position += move * currentSpeed * Time.deltaTime;
+            transform.position += currentSpeed * Time.deltaTime * move;
         }
 
         private void HandleRotation()
@@ -56,7 +69,7 @@ namespace AISelfDrivingCar.Handlers.Camera
             rotation.y += mouseX * rotationSpeed * Time.deltaTime; 
             rotation.x -= mouseY * rotationSpeed * Time.deltaTime; 
 
-            rotation.x = rotation.x % 360;
+            rotation.x %= 360;
             if (rotation.x > 180)
             {
                 rotation.x -= 360;
