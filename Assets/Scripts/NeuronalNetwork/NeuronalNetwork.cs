@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 //using MathNet.Numerics.dll
 namespace RT.NeuronalNetwork
 {
-    public class NeuronalNetwork : MonoBehaviour
+    public class NeuronalNetwork
     {
         public Matrix<float> InputLayer;
 
@@ -23,9 +23,9 @@ namespace RT.NeuronalNetwork
 
         public void InitialiseNetwork(int hiddenLayersCount, int hiddenNeuronalCount, int inputLayerCount = 3, int outputLayerCount = 2)
         {
-            InputLayer?.Clear();
+            InputLayer.Clear();
             HiddenLayers.Clear();
-            OutputLayer?.Clear();
+            OutputLayer.Clear();
             Weights.Clear();
             Biases.Clear();
 
@@ -56,6 +56,52 @@ namespace RT.NeuronalNetwork
             Biases.Add(Random.Range(-1f, 1f));
             
             RandomizeWeights();
+        }
+
+        public NeuronalNetwork CopyNeuronalNetwork(int hiddenLayerCount, int hiddenNeuronCount)
+        {
+            NeuronalNetwork newNet = new();
+
+            List<Matrix<float>> newWeights = new();
+
+            //bad performance
+            for (int i = 0; i < Weights.Count; i++)
+            {
+                Matrix<float> currentWeight = Matrix<float>.Build.Dense(Weights[i].RowCount, Weights[i].ColumnCount);
+
+                //copy the values from the original to the new one
+                for (int x = 0; x < currentWeight.RowCount; x++)
+                {
+                    for (int y = 0; y < currentWeight.ColumnCount; y++)
+                    {
+                        currentWeight[x, y] = Weights[i][x, y];
+                    }
+                }
+                newWeights.Add(currentWeight);
+            }
+
+            List<float> newBiases = new();
+            newBiases.AddRange(Biases);
+
+            newNet.Weights = newWeights;
+            newNet.Biases = newBiases;
+
+            newNet.InitializeHidden(hiddenLayerCount, hiddenNeuronCount);
+
+            return newNet;
+        }
+
+        private void InitializeHidden(int hiddenLayerCount, int hiddenNeuronCount)
+        {
+            InputLayer.Clear();
+            HiddenLayers.Clear();
+            OutputLayer.Clear();
+
+            for (int i = 0; i < hiddenLayerCount + 1; i++)
+            {
+                Matrix<float> newHiddenLayer = Matrix<float>.Build.Dense(1,hiddenNeuronCount );
+                HiddenLayers.Add(newHiddenLayer);
+            }
         }
 
         private void RandomizeWeights()

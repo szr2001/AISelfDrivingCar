@@ -213,7 +213,6 @@ GameObject:
   - component: {fileID: 5026015471691749296}
   - component: {fileID: 1901768713141171526}
   - component: {fileID: 5884977345227053468}
-  - component: {fileID: 8307619140213367833}
   m_Layer: 0
   m_Name: AICar
   m_TagString: Untagged
@@ -308,9 +307,6 @@ MonoBehaviour:
   CarMaxSimulationTime: 30
   LowFitnessValue: 40
   MaxFitnessValue: 1000
-  OnCarReset:
-    m_PersistentCalls:
-      m_Calls: []
   Layers: 1
   Neurons: 10
   OverallFitness: 0
@@ -330,20 +326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WorldCarUI: {fileID: 1905606312127719252}
---- !u!114 &8307619140213367833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539814016133116119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c9d4e6dadfdf684ab2cb478062f5457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Biases: []
-  Fitness: 0
 --- !u!1001 &158764662377197930
 PrefabInstance:
   m_ObjectHideFlags: 0

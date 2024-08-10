@@ -689,6 +689,58 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 44883056}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &50006285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 50006287}
+  - component: {fileID: 50006286}
+  m_Layer: 0
+  m_Name: GenericAlgorithmManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &50006286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50006285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5706168d364ad448e40f065f1d5b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carController: {fileID: 1348884455}
+  InitialPopulation: 25
+  MutationRate: 0.055
+  BestCarSelection: 8
+  WorstCarSelection: 3
+  NumberToCrossover: 39
+  currentGeneration: 0
+  currentGenome: 0
+--- !u!4 &50006287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50006285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &63840042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12608,6 +12660,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1347919842}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1348884455 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1901768713141171526, guid: 7a717fafb6951d94788a8156f1acf627,
+    type: 3}
+  m_PrefabInstance: {fileID: 41304960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c749c64936e3d8429ac76de2d2e5f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1373578968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18934,3 +18998,4 @@ SceneRoots:
   - {fileID: 116067931}
   - {fileID: 41304960}
   - {fileID: 1064104670}
+  - {fileID: 50006287}

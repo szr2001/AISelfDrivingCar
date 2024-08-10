@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 namespace AISelfDrivingCar.Handlers.Cars
 {
-    [RequireComponent(typeof(NeuronalNetwork))]
     public class CarController : MonoBehaviour
     {
         private Vector3 startPosition;
@@ -26,9 +25,6 @@ namespace AISelfDrivingCar.Handlers.Cars
         public float CarMaxSimulationTime = 20;
         public float LowFitnessValue = 40;
         public float MaxFitnessValue = 1000;
-
-        [HideInInspector]
-        public UnityEvent OnCarReset = new();
 
         [Header("Neuronal Network")]
         public int Layers = 1;
@@ -60,9 +56,7 @@ namespace AISelfDrivingCar.Handlers.Cars
         {
             startPosition = transform.position;
             startRotation = transform.eulerAngles;
-            NNet = GetComponent<NeuronalNetwork>();
-            
-            //test
+            NNet = new();
             NNet.InitialiseNetwork(Layers,Neurons);
         }
 
@@ -76,8 +70,17 @@ namespace AISelfDrivingCar.Handlers.Cars
             lastPosition = startPosition;
             transform.position = startPosition;
             transform.eulerAngles = startRotation;
-            NNet.InitialiseNetwork(Layers, Neurons);
-            OnCarReset?.Invoke();
+        }
+
+        public void ResetWithNetwork(NeuronalNetwork nnet)
+        {
+            NNet = nnet;
+            Reset();
+        }
+
+        private void Death()
+        {
+            CarGenericAlgorithmManager.Instance.Death(OverallFitness, NNet);
         }
 
         private void FixedUpdate()
@@ -97,7 +100,7 @@ namespace AISelfDrivingCar.Handlers.Cars
 
         private void OnTriggerEnter(Collider other)
         {
-            Reset();
+            Death();
         }
 
         private void CalculateFitness()
@@ -115,12 +118,12 @@ namespace AISelfDrivingCar.Handlers.Cars
             if(TimeSinceStart > CarMaxSimulationTime && OverallFitness < LowFitnessValue)
             {
                 //reset the car if it barley did anything
-                Reset();
+                Death();
             }
             if(OverallFitness >= MaxFitnessValue)
             {
-                //save
-                Reset();
+                //save because its good rawr
+                Death();
             }
         }
 

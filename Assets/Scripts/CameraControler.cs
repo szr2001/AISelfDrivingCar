@@ -65,6 +65,7 @@ namespace AISelfDrivingCar.Handlers.Camera
 
         private void HandleRotation()
         {
+            if (Cursor.lockState != CursorLockMode.Locked) return;
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
