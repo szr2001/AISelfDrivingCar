@@ -84,8 +84,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     {
         while(startIndex < InitialPopulation)
         {
-            newPopulation[startIndex] = new();
-            newPopulation[startIndex].InitialiseNetwork(carController.Layers,carController.Neurons);
+            newPopulation[startIndex] = new(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
             startIndex++;
         }
     }
@@ -113,7 +112,6 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         ShortPopulation();
 
         NeuronalNetwork[] newPopulation = PickPopulation();
-
         PopulationCrossover(newPopulation);
         PopulationMutate(newPopulation);
 
@@ -177,11 +175,8 @@ public class CarGenericAlgorithmManager : MonoBehaviour
                 }
             }
 
-            NeuronalNetwork Child1 = new();
-            NeuronalNetwork Child2 = new();
-
-            Child1.InitialiseNetwork(carController.Layers, carController.Neurons);
-            Child2.InitialiseNetwork(carController.Layers, carController.Neurons);
+            NeuronalNetwork Child1 = new(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
+            NeuronalNetwork Child2 = new(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
 
             Child1.Fitness = 0;
             Child2.Fitness = 0;
@@ -231,7 +226,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         for (int i = 0; i < BestCarSelection; i++)
         {
             //avoid changing the original array
-            newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons);
+            newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
             newPopulation[naturallySelected].Fitness = 0;
             naturallySelected++;
 

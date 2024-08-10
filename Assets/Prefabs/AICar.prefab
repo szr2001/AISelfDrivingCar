@@ -306,9 +306,11 @@ MonoBehaviour:
   sensorSensitity: 50
   CarMaxSimulationTime: 30
   LowFitnessValue: 40
-  MaxFitnessValue: 1000
+  MaxFitnessValue: 2000
   Layers: 1
   Neurons: 10
+  InputLayerCount: 3
+  OutputLayerCount: 2
   OverallFitness: 0
   DistanceMultiplier: 1.4
   AverageSpeedMultiplier: 0.2

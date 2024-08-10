@@ -11,25 +11,18 @@ namespace RT.NeuronalNetwork
     {
         public Matrix<float> InputLayer = Matrix<float>.Build.Dense(1, 3);
 
-        public List<Matrix<float>> HiddenLayers = new();
-
         public Matrix<float> OutputLayer = Matrix<float>.Build.Dense(1, 2);
 
-        public List<Matrix<float>> Weights = new();
+        public List<Matrix<float>> HiddenLayers = new();
 
+        public List<Matrix<float>> Weights = new();
+        
         public List<float> Biases = new();
 
         public float Fitness;
-        //add constructor
 
-        public void InitialiseNetwork(int hiddenLayersCount, int hiddenNeuronalCount, int inputLayerCount = 3, int outputLayerCount = 2)
+        public NeuronalNetwork(int hiddenLayersCount, int hiddenNeuronalCount, int inputLayerCount, int outputLayerCount)
         {
-            InputLayer.Clear();
-            HiddenLayers.Clear();
-            OutputLayer.Clear();
-            Weights.Clear();
-            Biases.Clear();
-
             InputLayer = Matrix<float>.Build.Dense(1, inputLayerCount);
             OutputLayer = Matrix<float>.Build.Dense(1, outputLayerCount);
 
@@ -39,10 +32,9 @@ namespace RT.NeuronalNetwork
                 HiddenLayers.Add(newMat);
 
                 Biases.Add(Random.Range(-1f, 1f));
-            
-                //connect the weights to neurons
 
-                if(layer == 0)
+                //connect the weights to neurons
+                if (layer == 0)
                 {
                     Matrix<float> inputToFirstLayer = Matrix<float>.Build.Dense(inputLayerCount, hiddenNeuronalCount);
                     Weights.Add(inputToFirstLayer);
@@ -55,13 +47,13 @@ namespace RT.NeuronalNetwork
             Matrix<float> outputWeight = Matrix<float>.Build.Dense(hiddenNeuronalCount, outputLayerCount);
             Weights.Add(outputWeight);
             Biases.Add(Random.Range(-1f, 1f));
-            
+
             RandomizeWeights();
         }
 
-        public NeuronalNetwork CopyNeuronalNetwork(int hiddenLayerCount, int hiddenNeuronCount)
+        public NeuronalNetwork CopyNeuronalNetwork(int hiddenLayerCount, int hiddenNeuronCount, int inputLayerCount, int outputLayerCount)
         {
-            NeuronalNetwork newNet = new();
+            NeuronalNetwork newNet = new(hiddenLayerCount, hiddenNeuronCount, inputLayerCount, outputLayerCount);
 
             List<Matrix<float>> newWeights = new();
 

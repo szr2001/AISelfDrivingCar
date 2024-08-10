@@ -29,6 +29,8 @@ namespace AISelfDrivingCar.Handlers.Cars
         [Header("Neuronal Network")]
         public int Layers = 1;
         public int Neurons = 10;
+        public int InputLayerCount = 3;
+        public int OutputLayerCount = 2;
 
         //Genetic algorithm
         [Header("Fitness")]
@@ -56,8 +58,7 @@ namespace AISelfDrivingCar.Handlers.Cars
         {
             startPosition = transform.position;
             startRotation = transform.eulerAngles;
-            NNet = new();
-            NNet.InitialiseNetwork(Layers,Neurons);
+            NNet = new(Layers, Neurons, InputLayerCount, OutputLayerCount);
         }
 
         //when the car simulation stops, reset the values back to normal so we can run it again
