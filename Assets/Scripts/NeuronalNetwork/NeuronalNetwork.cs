@@ -114,11 +114,11 @@ namespace RT.NeuronalNetwork
         //returns the output layer, takes the input layer
         //write so it returns an array of floats and takes an array of floats
         //because the input and output layer is set at initializeNetwork
-        public (float, float) RunNetwork(float a, float b, float c)
+        public float[] RunNetwork(float[] inputs)
         {
-            InputLayer[0, 0] = a;
-            InputLayer[0, 1] = b;
-            InputLayer[0, 2] = c;
+            InputLayer[0, 0] = inputs[0];
+            InputLayer[0, 1] = inputs[1];
+            InputLayer[0, 2] = inputs[2];
 
             //pointWisetan for activation because we want -1 and 1
             //so we don't lose any data
@@ -140,8 +140,16 @@ namespace RT.NeuronalNetwork
             //take the last layer multiplie by the last weights and adding the last biases
 
             OutputLayer = ((HiddenLayers[HiddenLayers.Count - 1] * Weights[Weights.Count - 1]) + Biases[Biases.Count - 1]).PointwiseTanh();
+
+            //optimise so we don't create an array each time
             //first is acceleration second is steering, TanH returns -1 or 1
-            return (Sigmoid(OutputLayer[0,0]), (float)Math.Tanh(OutputLayer[0,1]));
+            float[] Output = new float[]
+            {
+                Sigmoid(OutputLayer[0,0]),
+                (float)Math.Tanh(OutputLayer[0,1])
+            };
+
+            return Output;
         }
 
         //returns a value betweeen 0 and 1

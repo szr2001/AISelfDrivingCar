@@ -92,7 +92,10 @@ namespace AISelfDrivingCar.Handlers.Cars
             
             lastPosition = transform.position;
 
-            (Acceleration, Turning) = NNet.RunNetwork(leftSensor, ForwardSensor, RightSensor);
+            float[] Output = NNet.RunNetwork(new float[] { leftSensor, ForwardSensor, RightSensor });
+            Acceleration = Output[0];
+            Turning = Output[1];
+
             //asign from neuronalnet
             DriveCar(Acceleration, Turning);
 

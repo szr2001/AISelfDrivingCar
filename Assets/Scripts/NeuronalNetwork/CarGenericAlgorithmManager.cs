@@ -121,6 +121,8 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         currentGenome = 0;
 
         ResetToCurrentGenome();
+
+        //save the naturallySelected?
     }
 
     private void PopulationMutate(NeuronalNetwork[] newPopulation)
