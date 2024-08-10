@@ -719,7 +719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carController: {fileID: 1348884455}
-  InitialPopulation: 25
+  InitialPopulation: 85
   MutationRate: 0.055
   BestCarSelection: 8
   WorstCarSelection: 3

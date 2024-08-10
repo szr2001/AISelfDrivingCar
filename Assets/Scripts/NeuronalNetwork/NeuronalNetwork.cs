@@ -9,17 +9,18 @@ namespace RT.NeuronalNetwork
 {
     public class NeuronalNetwork
     {
-        public Matrix<float> InputLayer;
+        public Matrix<float> InputLayer = Matrix<float>.Build.Dense(1, 3);
 
         public List<Matrix<float>> HiddenLayers = new();
 
-        public Matrix<float> OutputLayer;
+        public Matrix<float> OutputLayer = Matrix<float>.Build.Dense(1, 2);
 
         public List<Matrix<float>> Weights = new();
 
         public List<float> Biases = new();
 
         public float Fitness;
+        //add constructor
 
         public void InitialiseNetwork(int hiddenLayersCount, int hiddenNeuronalCount, int inputLayerCount = 3, int outputLayerCount = 2)
         {
