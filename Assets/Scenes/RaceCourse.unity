@@ -717,7 +717,6 @@ MonoBehaviour:
   InitialPopulation: 85
   MutationRate: 0.055
   BestCarSelection: 8
-  WorstCarSelection: 3
   NumberToCrossover: 39
   currentGeneration: 0
   currentGenome: 0

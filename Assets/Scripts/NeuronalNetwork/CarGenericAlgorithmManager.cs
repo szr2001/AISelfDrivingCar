@@ -26,8 +26,6 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     [Header("Crossover Controls")]
     //The amount of the best cars we get for the next generation
     public int BestCarSelection = 8;
-    //The amount of the bad cars we get for the next generation
-    public int WorstCarSelection = 3;
 
     //the amount of cars to create from the best ones, the rest we randomize
     public int NumberToCrossover;
@@ -64,6 +62,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
 
     private void Start()
     {
+        carController.OnDeath.AddListener(Death);
         CreatePopulation();
     }
 
@@ -111,7 +110,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         naturallySelected = 0;
         ShortPopulation();
 
-        NeuronalNetwork[] newPopulation = PickPopulation();
+        NeuronalNetwork[] newPopulation = PickBestPopulation();
         PopulationCrossover(newPopulation);
         PopulationMutate(newPopulation);
 
@@ -218,7 +217,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         }
     }
 
-    private NeuronalNetwork[] PickPopulation()
+    private NeuronalNetwork[] PickBestPopulation()
     {
         NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
 
@@ -237,22 +236,6 @@ public class CarGenericAlgorithmManager : MonoBehaviour
                 genePool.Add(i);
             }
         }
-
-        //pick worst, might not be needed
-        for (int i = 0; i < WorstCarSelection; i++)
-        {
-            //get the last index and go up
-            int last = population.Length - 1;
-            last -= i;
-
-            int ChancesOfSelection = Mathf.RoundToInt(population[last].Fitness * 10);
-
-            for (int c = 0; c < ChancesOfSelection; c++)
-            {
-                genePool.Add(last);
-            }
-        }
-
         return newPopulation;
     }
 

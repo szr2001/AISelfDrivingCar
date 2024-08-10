@@ -60,7 +60,7 @@ namespace AISelfDrivingCar.Handlers.Camera
                 currentSpeed *= boostMultiplier;
             }
 
-            transform.position += currentSpeed * Time.deltaTime * move;
+            transform.position += currentSpeed * move * Time.deltaTime;
         }
 
         private void HandleRotation()

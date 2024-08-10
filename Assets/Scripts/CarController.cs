@@ -26,6 +26,8 @@ namespace AISelfDrivingCar.Handlers.Cars
         public float LowFitnessValue = 40;
         public float MaxFitnessValue = 1000;
 
+        public UnityEvent<float, NeuronalNetwork> OnDeath = new();
+
         [Header("Neuronal Network")]
         public int Layers = 1;
         public int Neurons = 10;
@@ -81,7 +83,7 @@ namespace AISelfDrivingCar.Handlers.Cars
 
         private void Death()
         {
-            CarGenericAlgorithmManager.Instance.Death(OverallFitness, NNet);
+            OnDeath?.Invoke(OverallFitness, NNet);
         }
 
         private void FixedUpdate()

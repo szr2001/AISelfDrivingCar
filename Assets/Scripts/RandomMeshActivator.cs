@@ -5,12 +5,25 @@ namespace AISelfDrivingCar.Handlers.Extra
 {
     public class RandomMeshActivator : MonoBehaviour
     {
+        private int selectedMesh = -1;
+        private int childCount;
+
         private void Awake()
         {
-            int childCount = transform.childCount;
+            childCount = transform.childCount;
+            ChooseRandomMesh();
+        }
 
-            GameObject SelectedMesh = transform.GetChild(Random.Range(0, childCount)).gameObject;
-            SelectedMesh.SetActive(true);  
+        public void ChooseRandomMesh()
+        {
+            if(selectedMesh !=  -1)
+            {
+                transform.GetChild(selectedMesh).gameObject.SetActive(false);
+            }
+
+            selectedMesh = Random.Range(0, childCount);
+
+            transform.GetChild(selectedMesh).gameObject.SetActive(true);
         }
     }
 }
