@@ -299,14 +299,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Acceleration: 0
-  VerticalSpeed: 18
+  VerticalSpeed: 30
   Turning: 0
-  HorizontalSpeed: 0.025
+  HorizontalSpeed: 0.04
   TimeSinceStart: 0
   sensorSensitity: 50
-  CarMaxSimulationTime: 30
+  MinElapsedTime: 20
+  MaxElapsedTime: 40
   LowFitnessValue: 40
-  MaxFitnessValue: 2000
   OnDeath:
     m_PersistentCalls:
       m_Calls:
@@ -328,8 +328,8 @@ MonoBehaviour:
   InputLayerCount: 3
   OutputLayerCount: 2
   OverallFitness: 0
-  DistanceMultiplier: 1.4
-  AverageSpeedMultiplier: 0.2
+  DistanceMultiplier: 0.8
+  AverageSpeedMultiplier: 1.2
   SensorMultiplier: 0.1
 --- !u!114 &5884977345227053468
 MonoBehaviour:

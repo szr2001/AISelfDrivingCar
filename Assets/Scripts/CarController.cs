@@ -22,9 +22,9 @@ namespace AISelfDrivingCar.Handlers.Cars
 
         public float TimeSinceStart = 0f;
         public float sensorSensitity = 20;
-        public float CarMaxSimulationTime = 20;
+        public float MinElapsedTime = 20;
+        public float MaxElapsedTime = 140;
         public float LowFitnessValue = 40;
-        public float MaxFitnessValue = 1000;
 
         public UnityEvent<float, NeuronalNetwork> OnDeath = new();
 
@@ -118,12 +118,12 @@ namespace AISelfDrivingCar.Handlers.Cars
                 (averageSpeed * AverageSpeedMultiplier) +
                 (((leftSensor * ForwardSensor * RightSensor) / 3) * SensorMultiplier);
 
-            if(TimeSinceStart > CarMaxSimulationTime && OverallFitness < LowFitnessValue)
+            if(TimeSinceStart > MinElapsedTime && OverallFitness < LowFitnessValue)
             {
                 //reset the car if it barley did anything
                 Death();
             }
-            if(OverallFitness >= MaxFitnessValue)
+            if(TimeSinceStart >= MaxElapsedTime)
             {
                 //save because its good rawr
                 Death();
