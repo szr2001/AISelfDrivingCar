@@ -1,14 +1,12 @@
 using AISelfDrivingCar.Handlers.Cars;
 using AISelfDrivingCar.Handlers.UI;
 using AISelfDrivingCar.Interfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AISelfDrivingCar.Handlers
 {
     [RequireComponent(typeof(CarController))]
-    public class CarUiHandler : MonoBehaviour, IInteract
+    public class CarUiHandler : MonoBehaviour
     {
         public WorldCarUI WorldCarUI;
 
@@ -18,10 +16,11 @@ namespace AISelfDrivingCar.Handlers
             carController = GetComponent<CarController>();
         }
 
-        public void Interact()
+        private void Update()
         {
-            if (WorldCarUI == null) return;
-            WorldCarUI.ShowUI();
+            if (carController == null) return;
+
+            WorldCarUI.UpdateUiData(carController.Acceleration, carController.TimeSinceStart, carController.OverallFitness);
         }
     }
 }

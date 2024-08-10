@@ -37,7 +37,7 @@ namespace RT.NeuronalNetwork
                 Matrix<float> newMat = Matrix<float>.Build.Dense(1, hiddenNeuronalCount);
                 HiddenLayers.Add(newMat);
 
-                Biases.Add(Random.Range(-1, 1));
+                Biases.Add(Random.Range(-1f, 1f));
             
                 //connect the weights to neurons
 
@@ -53,7 +53,7 @@ namespace RT.NeuronalNetwork
 
             Matrix<float> outputWeight = Matrix<float>.Build.Dense(hiddenNeuronalCount, outputLayerCount);
             Weights.Add(outputWeight);
-            Biases.Add(Random.Range(-1, 1));
+            Biases.Add(Random.Range(-1f, 1f));
             
             RandomizeWeights();
         }
@@ -66,7 +66,7 @@ namespace RT.NeuronalNetwork
                 {
                     for (int y = 0; y < Weights[i].ColumnCount; y++)
                     {
-                        Weights[i][x, y] = Random.Range(-1,1);
+                        Weights[i][x, y] = Random.Range(-1f,1f);
                     }
                 }
             }

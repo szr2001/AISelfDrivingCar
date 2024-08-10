@@ -10,9 +10,12 @@ namespace AISelfDrivingCar.Handlers.Camera
         public float rotationSpeed = 150f;
         public float boostMultiplier = 2f;
 
+        public static UnityEngine.Camera PlayerCamera;
+
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
+            PlayerCamera = GetComponent<UnityEngine.Camera>();
         }
 
         private void Update()

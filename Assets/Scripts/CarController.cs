@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Timeline;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AISelfDrivingCar.Handlers.Cars
 {
@@ -25,6 +26,9 @@ namespace AISelfDrivingCar.Handlers.Cars
         public float CarMaxSimulationTime = 20;
         public float LowFitnessValue = 40;
         public float MaxFitnessValue = 1000;
+
+        [HideInInspector]
+        public UnityEvent OnCarReset = new();
 
         [Header("Neuronal Network")]
         public int Layers = 1;
@@ -72,6 +76,8 @@ namespace AISelfDrivingCar.Handlers.Cars
             lastPosition = startPosition;
             transform.position = startPosition;
             transform.eulerAngles = startRotation;
+            NNet.InitialiseNetwork(Layers, Neurons);
+            OnCarReset?.Invoke();
         }
 
         private void FixedUpdate()
@@ -87,14 +93,10 @@ namespace AISelfDrivingCar.Handlers.Cars
             TimeSinceStart += Time.deltaTime;
 
             CalculateFitness();
-
-            //Acceleration = 0;
-            //Turning = 0;  
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            NNet.InitialiseNetwork(Layers,Neurons);
             Reset();
         }
 
@@ -112,6 +114,7 @@ namespace AISelfDrivingCar.Handlers.Cars
 
             if(TimeSinceStart > CarMaxSimulationTime && OverallFitness < LowFitnessValue)
             {
+                //reset the car if it barley did anything
                 Reset();
             }
             if(OverallFitness >= MaxFitnessValue)
