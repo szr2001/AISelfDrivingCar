@@ -50,20 +50,22 @@ namespace AISelfDrivingCar.Handlers.U
         {
             BestCarSelection = bestCarSelection;
             PopulationT.text = population.ToString();
+            GenerateScoreboard(new float[bestCarSelection]);
         }
 
-        private void GenerateScoreboard(int[] Scores)
+        public void GenerateScoreboard(float[] Scores)
         {
             foreach(GenomeUi genome in SpawnedGemonesUi)
             {
                 Destroy(genome.gameObject);
             }
+            SpawnedGemonesUi.Clear();
 
             for (int i = 0; i < BestCarSelection; i++)
             {
                 GameObject GenomeUiObj = Instantiate(UiPrefab.gameObject, ScoreBoardHolder);
                 SpawnedGemonesUi.Add(GenomeUiObj.GetComponent<GenomeUi>());
-                SpawnedGemonesUi[i].SetGenomeUiData(i, Scores[i]);
+                SpawnedGemonesUi[i].SetGenomeUiData(i + 1, Scores[i]);
             }
         }
 

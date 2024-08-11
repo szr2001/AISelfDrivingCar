@@ -804,6 +804,7 @@ MonoBehaviour:
       m_Calls: []
   BestCarSelection: 8
   NumberToCrossover: 39
+  GenerationBestFitness: []
 --- !u!4 &50006287
 Transform:
   m_ObjectHideFlags: 0
@@ -1829,7 +1830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotationSpeed: 300
+  rotationSpeed: 450
   boostMultiplier: 4
 --- !u!1001 &116309562
 PrefabInstance:
@@ -4262,7 +4263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -78.06973, y: -175.12482}
+  m_AnchoredPosition: {x: -83.7, y: -175.12482}
   m_SizeDelta: {x: 146.7966, y: 340.1526}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363911872
@@ -19333,7 +19334,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 5
+  m_Intensity: 3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

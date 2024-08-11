@@ -48,6 +48,7 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     //when we create a new set of populations we increment the generation
     //Represents how fast they learn, the least ammount of generation to
     //acomplish the target the better!
+    public float[] GenerationBestFitness;
     private int _currentGeneration;
     public int currentGeneration 
     {
@@ -135,7 +136,6 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     private void RePopulate()
     {
         genePool.Clear();
-        currentGeneration++;
         naturallySelected = 0;
         ShortPopulation();
 
@@ -146,10 +146,11 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         FillPopulationWithRandomValues(newPopulation, naturallySelected);
 
         population = newPopulation;
-
         currentGenome = 0;
 
         ResetToCurrentGenome();
+
+        currentGeneration++;
 
         //save the naturallySelected?
     }
@@ -251,13 +252,14 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     private NeuronalNetwork[] PickBestPopulation()
     {
         NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
-
+        GenerationBestFitness = new float[BestCarSelection];
         //pick best
         for (int i = 0; i < BestCarSelection; i++)
         {
             //avoid changing the original array
             newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
             newPopulation[naturallySelected].Fitness = 0;
+            GenerationBestFitness[i] = population[i].Fitness;
             naturallySelected++;
 
             int ChancesOfSelection = Mathf.RoundToInt(population[i].Fitness * 10);

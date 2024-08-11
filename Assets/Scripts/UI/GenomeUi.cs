@@ -10,10 +10,15 @@ namespace AISelfDrivingCar.Handlers.UI
         public TextMeshProUGUI PlaceT;
         public TextMeshProUGUI FitnessScoreT;
 
-        public void SetGenomeUiData(int place, int Fitness)
+        public void SetGenomeUiData(int place, float Fitness)
         {
+            if(place <= 3)
+            {
+                transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+            }
+
             PlaceT.text = place.ToString();
-            FitnessScoreT.text = Fitness.ToString();
+            FitnessScoreT.text = ((int)Fitness).ToString();
         }
     }
 }
