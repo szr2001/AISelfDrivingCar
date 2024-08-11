@@ -8,6 +8,7 @@ using RT.NeuronalNetwork;
 using System;
 using System.Linq;
 using Random = UnityEngine.Random;
+using UnityEngine.Events;
 
 //Creates the cars and saves the ones that have the best fitness
 //and uses them to create the next cars
@@ -21,6 +22,11 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     public int InitialPopulation = 85;
     [Range(0f, 1f)]
     public float MutationRate = 0.055f;
+    
+    [HideInInspector]
+    public UnityEvent<int> OnNextGeneration = new();
+    [HideInInspector]
+    public UnityEvent<int> OnNextGenome = new();
 
     //controlls how the parents are combined
     [Header("Crossover Controls")]
@@ -42,9 +48,33 @@ public class CarGenericAlgorithmManager : MonoBehaviour
     //when we create a new set of populations we increment the generation
     //Represents how fast they learn, the least ammount of generation to
     //acomplish the target the better!
-    public int currentGeneration;
+    private int _currentGeneration;
+    public int currentGeneration 
+    {
+        get 
+        {
+            return _currentGeneration;
+        }
+        set
+        {
+            _currentGeneration = value;
+            OnNextGeneration?.Invoke(_currentGeneration);
+        }
+    }
     //each individual car in the population
-    public int currentGenome = 0;
+    private int _currentGenome = 0;
+    public int currentGenome 
+    { 
+        get 
+        {
+            return _currentGenome;
+        }
+        set
+        {
+            _currentGenome = value;
+            OnNextGenome?.Invoke(_currentGenome);
+        }
+    }
 
     private void Awake()
     {
@@ -71,7 +101,6 @@ public class CarGenericAlgorithmManager : MonoBehaviour
         population = new NeuronalNetwork[InitialPopulation];
         FillPopulationWithRandomValues(population, 0);
         ResetToCurrentGenome();
-
     }
 
     private void ResetToCurrentGenome()

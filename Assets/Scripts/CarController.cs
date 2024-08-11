@@ -1,7 +1,6 @@
 using RT.NeuronalNetwork;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -145,7 +144,6 @@ namespace AISelfDrivingCar.Handlers.Cars
             {
                 RightSensor = hit.distance / sensorSensitity;
                 Debug.DrawLine(ray.origin, hit.point, Color.red);
-                Debug.Log($"Right {RightSensor}");
             }
             
             ray.direction = forrward;
@@ -154,7 +152,6 @@ namespace AISelfDrivingCar.Handlers.Cars
             {
                 ForwardSensor = hit.distance / sensorSensitity;
                 Debug.DrawLine(ray.origin, hit.point, Color.red);
-                Debug.Log($"Forward {ForwardSensor}");
             }
 
             ray.direction = left ;
@@ -163,7 +160,6 @@ namespace AISelfDrivingCar.Handlers.Cars
             {
                 leftSensor = hit.distance / sensorSensitity;
                 Debug.DrawLine(ray.origin, hit.point, Color.red);
-                Debug.Log($"Left {leftSensor}");
             }
         }
 

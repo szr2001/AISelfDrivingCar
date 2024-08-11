@@ -79,12 +79,12 @@ namespace RT.NeuronalNetwork
             newNet.Weights = newWeights;
             newNet.Biases = newBiases;
 
-            newNet.InitializeHidden(hiddenLayerCount, hiddenNeuronCount);
+            newNet.InitializeHiddenLayer(hiddenLayerCount, hiddenNeuronCount);
 
             return newNet;
         }
 
-        private void InitializeHidden(int hiddenLayerCount, int hiddenNeuronCount)
+        private void InitializeHiddenLayer(int hiddenLayerCount, int hiddenNeuronCount)
         {
             InputLayer.Clear();
             HiddenLayers.Clear();

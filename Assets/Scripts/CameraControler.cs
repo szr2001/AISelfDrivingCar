@@ -11,7 +11,7 @@ namespace AISelfDrivingCar.Handlers.Camera
         public float boostMultiplier = 2f;
 
         public static UnityEngine.Camera PlayerCamera;
-
+        private bool IsMouseVisible = false;
         private void Awake()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -27,13 +27,18 @@ namespace AISelfDrivingCar.Handlers.Camera
 
         private void ToggleCursor()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
             if (Input.GetMouseButtonDown(1))
             {
-                Cursor.lockState = CursorLockMode.None;
+                if (IsMouseVisible)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    IsMouseVisible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    IsMouseVisible = true;
+                }
             }
         }
 
@@ -60,7 +65,7 @@ namespace AISelfDrivingCar.Handlers.Camera
                 currentSpeed *= boostMultiplier;
             }
 
-            transform.position += currentSpeed * move * Time.deltaTime;
+            transform.position += (currentSpeed / Time.timeScale) * move * Time.deltaTime;
         }
 
         private void HandleRotation()
@@ -70,8 +75,8 @@ namespace AISelfDrivingCar.Handlers.Camera
             float mouseY = Input.GetAxis("Mouse Y");
 
             Vector3 rotation = transform.localEulerAngles;
-            rotation.y += mouseX * rotationSpeed * Time.deltaTime; 
-            rotation.x -= mouseY * rotationSpeed * Time.deltaTime; 
+            rotation.y += mouseX * (rotationSpeed / Time.timeScale) * Time.deltaTime; 
+            rotation.x -= mouseY * (rotationSpeed / Time.timeScale) * Time.deltaTime; 
 
             rotation.x %= 360;
             if (rotation.x > 180)
