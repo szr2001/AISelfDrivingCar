@@ -306,7 +306,7 @@ MonoBehaviour:
   sensorSensitity: 50
   MinElapsedTime: 20
   MaxElapsedTime: 40
-  LowFitnessValue: 40
+  LowFitnessValue: 80
   OnDeath:
     m_PersistentCalls:
       m_Calls:
@@ -328,8 +328,8 @@ MonoBehaviour:
   InputLayerCount: 3
   OutputLayerCount: 2
   OverallFitness: 0
-  DistanceMultiplier: 0.8
-  AverageSpeedMultiplier: 1.2
+  DistanceMultiplier: 0.6
+  AverageSpeedMultiplier: 1.4
   SensorMultiplier: 0.1
 --- !u!114 &5884977345227053468
 MonoBehaviour:

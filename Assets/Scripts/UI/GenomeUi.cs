@@ -14,7 +14,7 @@ namespace AISelfDrivingCar.Handlers.UI
         {
             if(place <= 3)
             {
-                transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+                transform.localScale = new Vector3(1.06f, 1.06f, 1.06f);
             }
 
             PlaceT.text = place.ToString();

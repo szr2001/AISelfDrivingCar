@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace RT.NeuronalNetwork
 {
+    [RequireComponent(typeof(CarGenericAlgorithmManager))]
     public class CarGenericAlgorithmUIHandler : MonoBehaviour
     {
         public AiRaceUI raceUI;

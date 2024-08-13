@@ -51,6 +51,16 @@ namespace RT.NeuronalNetwork
             RandomizeWeights();
         }
 
+        public NeuronalData GetNeuronalData()
+        {
+            return null;
+        }
+
+        public void OverrideNeuronalData(NeuronalData NnData)
+        {
+
+        }
+
         public NeuronalNetwork CopyNeuronalNetwork(int hiddenLayerCount, int hiddenNeuronCount, int inputLayerCount, int outputLayerCount)
         {
             NeuronalNetwork newNet = new(hiddenLayerCount, hiddenNeuronCount, inputLayerCount, outputLayerCount);
@@ -157,5 +167,11 @@ namespace RT.NeuronalNetwork
         {
             return (1 / (1 + Mathf.Exp(-s)));
         }
+    }
+
+    [Serializable]
+    public class NeuronalData
+    {
+
     }
 }
