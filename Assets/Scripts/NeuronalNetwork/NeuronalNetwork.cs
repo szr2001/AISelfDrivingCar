@@ -53,7 +53,19 @@ namespace RT.NeuronalNetwork
 
         public NeuronalData GetNeuronalData()
         {
-            return null;
+            List<float[,]> hiddenlayersData = new();
+            List<float[,]> weightsData = new();
+
+            foreach(var hidlayer in HiddenLayers.ToArray())
+            {
+                hiddenlayersData.Add(hidlayer.ToArray());
+            }
+            foreach (var weight in Weights.ToArray())
+            {
+                weightsData.Add(weight.ToArray());
+            }
+
+            return new NeuronalData(InputLayer.ToArray(), OutputLayer.ToArray(), hiddenlayersData.ToArray(), weightsData.ToArray(), Biases.ToArray());
         }
 
         public void OverrideNeuronalData(NeuronalData NnData)
@@ -88,7 +100,7 @@ namespace RT.NeuronalNetwork
 
             newNet.Weights = newWeights;
             newNet.Biases = newBiases;
-
+            newNet.Fitness = Fitness;
             newNet.InitializeHiddenLayer(hiddenLayerCount, hiddenNeuronCount);
 
             return newNet;
@@ -172,6 +184,19 @@ namespace RT.NeuronalNetwork
     [Serializable]
     public class NeuronalData
     {
+       public float[,] InputLayers;
+       public float[,] OutputLayers;
+       public float[][,] HiddenLayers;
+       public float[][,] Weights;
+       public float[] Biases;
 
+        public NeuronalData(float[,] inputLayers, float[,] outputLayers, float[][,] hiddenLayers, float[][,] weights, float[] biases)
+        {
+            InputLayers = inputLayers;
+            OutputLayers = outputLayers;
+            HiddenLayers = hiddenLayers;
+            Weights = weights;
+            Biases = biases;
+        }
     }
 }

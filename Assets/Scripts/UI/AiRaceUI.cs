@@ -1,5 +1,6 @@
 using AISelfDrivingCar.Handlers.UI;
 using JetBrains.Annotations;
+using RT.NeuronalNetwork;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,10 +51,10 @@ namespace AISelfDrivingCar.Handlers.U
         {
             BestCarSelection = bestCarSelection;
             PopulationT.text = population.ToString();
-            GenerateScoreboard(new float[bestCarSelection]);
+            GenerateScoreboard(null);
         }
 
-        public void GenerateScoreboard(float[] Scores)
+        public void GenerateScoreboard(NeuronalNetwork[] BestNnet)
         {
             foreach(GenomeUi genome in SpawnedGemonesUi)
             {
@@ -65,7 +66,7 @@ namespace AISelfDrivingCar.Handlers.U
             {
                 GameObject GenomeUiObj = Instantiate(UiPrefab.gameObject, ScoreBoardHolder);
                 SpawnedGemonesUi.Add(GenomeUiObj.GetComponent<GenomeUi>());
-                SpawnedGemonesUi[i].SetGenomeUiData(i + 1, Scores[i]);
+                SpawnedGemonesUi[i].SetGenomeUiData(i + 1, BestNnet == null ? 0 : BestNnet[i].Fitness);
             }
         }
 

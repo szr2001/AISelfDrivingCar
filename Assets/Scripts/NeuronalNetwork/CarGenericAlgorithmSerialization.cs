@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Text;
 
 
 namespace RT.NeuronalNetwork
@@ -31,26 +32,24 @@ namespace RT.NeuronalNetwork
             SavePath = SavePath + $"\\{FileName}";
             string ID = DateTime.Now.Ticks.ToString();
 
-            CarGenerationData carGeneration = new();
+            List<NeuronalData> neuronalDatas = new();
 
+            foreach(NeuronalNetwork nn in carAlgorithmManager.BestNeuronalNetworks)
+            {
+                neuronalDatas.Add(nn.GetNeuronalData());
+            }
 
+            CarGenerationData carGeneration = new(neuronalDatas.ToArray(), carAlgorithmManager.currentGeneration);
 
-            //string json = JsonConvert.SerializeObject(inputLayer.ToArray());
-            //File.WriteAllText(FileName + "\\inputLayer_" + ID + ".txt", json);
-            //json = JsonConvert.SerializeObject(hiddenLayers.ToArray());
-            //File.WriteAllText(FileName + "\\hiddenLayers_" + ID + ".txt", json);
-            //json = JsonConvert.SerializeObject(outputLayer.ToArray());
-            //File.WriteAllText(FileName + "\\outputLayers_" + ID + ".txt", json);
-            //json = JsonConvert.SerializeObject(weights.ToArray());
-            //File.WriteAllText(FileName + "\\weights_" + ID + ".txt", json);
-            //json = JsonConvert.SerializeObject(biases.ToArray());
-            //File.WriteAllText(FileName + "\\biases_" + ID + ".txt", json);
+            string json = JsonConvert.SerializeObject(carGeneration, Formatting.Indented);
+            File.WriteAllText($"{FileName}_{ID}.json", json);
+
+            Debug.Log($"SAVED best of generation {carGeneration.CurrentGeneration}");
         }
-        //create a NeuronalNetworkData class with serializable to hold all the data
-        //and serializa an array of NeuronalNetowkrData as json
+
         public void LoadGeneration()
         {
-
+            Debug.Log($"LOADED generation");
         }
     }
 }

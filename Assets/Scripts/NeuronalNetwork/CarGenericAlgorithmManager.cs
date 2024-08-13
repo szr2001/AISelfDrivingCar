@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 
 //Creates the cars and saves the ones that have the best fitness
 //and uses them to create the next cars
@@ -35,6 +36,9 @@ namespace RT.NeuronalNetwork
         //the amount of cars to create from the best ones, the rest we randomize
         public int NumberToCrossover;
 
+        [HideInInspector]
+        public List<NeuronalNetwork> BestNeuronalNetworks = new();
+
         //all the selected networks
         private List<int> genePool = new();
         //how many are selected vs how many are random generated
@@ -47,7 +51,6 @@ namespace RT.NeuronalNetwork
         //when we create a new set of populations we increment the generation
         //Represents how fast they learn, the least ammount of generation to
         //acomplish the target the better!
-        public float[] GenerationBestFitness;
         private int _currentGeneration;
         public int currentGeneration
         {
@@ -138,7 +141,9 @@ namespace RT.NeuronalNetwork
             naturallySelected = 0;
             ShortPopulation();
 
+            BestNeuronalNetworks.Clear();
             NeuronalNetwork[] newPopulation = PickBestPopulation();
+
             PopulationCrossover(newPopulation);
             PopulationMutate(newPopulation);
 
@@ -150,8 +155,6 @@ namespace RT.NeuronalNetwork
             ResetToCurrentGenome();
 
             currentGeneration++;
-
-            //save the naturallySelected?
         }
 
         private void PopulationMutate(NeuronalNetwork[] newPopulation)
@@ -251,14 +254,15 @@ namespace RT.NeuronalNetwork
         private NeuronalNetwork[] PickBestPopulation()
         {
             NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
-            GenerationBestFitness = new float[BestCarSelection];
             //pick best
             for (int i = 0; i < BestCarSelection; i++)
             {
+                //clone the best ones
+                BestNeuronalNetworks.Add(population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount));
+
                 //avoid changing the original array
                 newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
                 newPopulation[naturallySelected].Fitness = 0;
-                GenerationBestFitness[i] = population[i].Fitness;
                 naturallySelected++;
 
                 int ChancesOfSelection = Mathf.RoundToInt(population[i].Fitness * 10);
@@ -280,6 +284,13 @@ namespace RT.NeuronalNetwork
     [Serializable]
     public class CarGenerationData
     {
-        public NeuronalData[] Generation; 
+        public NeuronalData[] GenerationData;
+        public int CurrentGeneration;
+
+        public CarGenerationData(NeuronalData[] generationData, int currentGeneration)
+        {
+            GenerationData = generationData;
+            CurrentGeneration = currentGeneration;
+        }
     }
 }

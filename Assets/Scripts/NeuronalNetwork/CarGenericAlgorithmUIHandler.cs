@@ -32,7 +32,7 @@ namespace RT.NeuronalNetwork
         private void GenerationChanged(int generationIndex)
         {
             raceUI.UpdateGenerationText(generationIndex);
-            raceUI.GenerateScoreboard(carGenericManager.GenerationBestFitness);
+            raceUI.GenerateScoreboard(carGenericManager.BestNeuronalNetworks.ToArray());
         }
     }
 }
