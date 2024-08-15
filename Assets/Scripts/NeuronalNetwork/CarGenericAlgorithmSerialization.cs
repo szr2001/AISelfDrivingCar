@@ -52,6 +52,8 @@ namespace RT.NeuronalNetwork
             {
                 string json = File.ReadAllText(@$"{SavePath}/{FileName}.json");
                 CarGenerationData LoadedGenerationData = JsonConvert.DeserializeObject<CarGenerationData>(json);
+
+                carAlgorithmManager.RePopulate(LoadedGenerationData);
                 Debug.Log(LoadedGenerationData.GenerationNumber);
                 Debug.Log($"LOADED generation");
             }

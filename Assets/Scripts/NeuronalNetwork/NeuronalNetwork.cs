@@ -4,6 +4,8 @@ using UnityEngine;
 using System;
 using MathNet.Numerics.LinearAlgebra;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
+using System.Linq;
 //using MathNet.Numerics.dll
 namespace RT.NeuronalNetwork
 {
@@ -65,12 +67,27 @@ namespace RT.NeuronalNetwork
                 weightsData.Add(weight.ToArray());
             }
 
-            return new NeuronalData(InputLayer.ToArray(), OutputLayer.ToArray(), hiddenlayersData.ToArray(), weightsData.ToArray(), Biases.ToArray());
+            return new NeuronalData(InputLayer.ToArray(), OutputLayer.ToArray(), hiddenlayersData.ToArray(), weightsData.ToArray(), Biases.ToArray(), Fitness);
         }
 
         public void OverrideNeuronalData(NeuronalData NnData)
         {
+            HiddenLayers.Clear();
+            Weights.Clear();
+            InputLayer = Matrix<float>.Build.Dense(1, NnData.InputLayers.Length);
+            OutputLayer = Matrix<float>.Build.Dense(1, NnData.OutputLayers.Length);
+            Biases = NnData.Biases.ToList();
 
+            for (int i = 0; i < NnData.HiddenLayers.Length; i++)
+            {
+                Matrix<float> HiddenLayer = Matrix<float>.Build.DenseOfArray(NnData.HiddenLayers[i]);
+                HiddenLayers.Add(HiddenLayer);
+            }
+            for (int i = 0; i < NnData.Weights.Length; i++)
+            {
+                Matrix<float> weight= Matrix<float>.Build.DenseOfArray(NnData.Weights[i]);
+                Weights.Add(weight);
+            }
         }
 
         public NeuronalNetwork CopyNeuronalNetwork(int hiddenLayerCount, int hiddenNeuronCount, int inputLayerCount, int outputLayerCount)
@@ -184,19 +201,21 @@ namespace RT.NeuronalNetwork
     [Serializable]
     public class NeuronalData
     {
-       public float[,] InputLayers;
-       public float[,] OutputLayers;
-       public float[][,] HiddenLayers;
-       public float[][,] Weights;
-       public float[] Biases;
+        public float[,] InputLayers;
+        public float[,] OutputLayers;
+        public float[][,] HiddenLayers;
+        public float[][,] Weights;
+        public float[] Biases;
+        public float Fitness;
 
-        public NeuronalData(float[,] inputLayers, float[,] outputLayers, float[][,] hiddenLayers, float[][,] weights, float[] biases)
+        public NeuronalData(float[,] inputLayers, float[,] outputLayers, float[][,] hiddenLayers, float[][,] weights, float[] biases, float fitness)
         {
             InputLayers = inputLayers;
             OutputLayers = outputLayers;
             HiddenLayers = hiddenLayers;
             Weights = weights;
             Biases = biases;
+            Fitness = fitness;
         }
     }
 }

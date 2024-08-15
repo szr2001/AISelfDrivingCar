@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine;
 using System.Linq;
 using System;
-using Unity.VisualScripting;
+using Unity.Properties;
 
 //Creates the cars and saves the ones that have the best fitness
 //and uses them to create the next cars
@@ -135,14 +135,22 @@ namespace RT.NeuronalNetwork
             }
         }
 
-        private void RePopulate()
+        public void RePopulate(CarGenerationData genData = null)
         {
             genePool.Clear();
             naturallySelected = 0;
-            ShortPopulation();
-
             BestNeuronalNetworks.Clear();
-            NeuronalNetwork[] newPopulation = PickBestPopulation();
+
+            NeuronalNetwork[] newPopulation;
+            if (genData == null)
+            {
+                ShortPopulation();
+                newPopulation = PickBestPopulation();
+            }
+            else
+            {
+                newPopulation = LoadBestNetsFromData(genData);
+            }
 
             PopulationCrossover(newPopulation);
             PopulationMutate(newPopulation);
@@ -157,36 +165,56 @@ namespace RT.NeuronalNetwork
             currentGeneration++;
         }
 
-        private void PopulationMutate(NeuronalNetwork[] newPopulation)
+        private NeuronalNetwork[] LoadBestNetsFromData(CarGenerationData genData)
         {
-            //get the children and add a chance for mutation
-            for (int i = 0; i < naturallySelected; i++)
+            NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
+
+            //create the 8 networks
+            for (int i = 0; i < genData.GenerationData.Length; i++)
             {
-                for (int j = 0; j < newPopulation[i].Weights.Count; j++)
+                NeuronalData NetData = genData.GenerationData[0];
+                NeuronalNetwork newNet = new(NetData.HiddenLayers.Length, NetData.HiddenLayers[0].Length, NetData.InputLayers.Length, NetData.OutputLayers.Length);
+                newNet.OverrideNeuronalData(NetData);
+                newNet.Fitness = NetData.Fitness;
+
+                BestNeuronalNetworks.Add(newNet.CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount));
+
+                newPopulation[naturallySelected] = newNet.CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
+                newPopulation[naturallySelected].Fitness = 0;
+                naturallySelected++;
+
+                int ChancesOfSelection = Mathf.RoundToInt(population[i].Fitness * 10);
+
+                for (int c = 0; c < ChancesOfSelection; c++)
                 {
-                    if (Random.Range(0f, 1f) < MutationRate)
-                    {
-                        newPopulation[i].Weights[j] = MutateWeights(newPopulation[i].Weights[j]);
-                    }
+                    genePool.Add(i);
                 }
             }
+            return newPopulation;
         }
 
-        private Matrix<float> MutateWeights(Matrix<float> weight)
+        private NeuronalNetwork[] PickBestPopulation()
         {
-            //get a random amount of values dividing by 7 to not pick to manu or to little
-            int randomPoints = Random.Range(1, (weight.RowCount * weight.ColumnCount) / 7);
-
-            Matrix<float> mutateWeights = weight;
-
-            for (int i = 0; i < randomPoints; i++)
+            NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
+            //pick best
+            for (int i = 0; i < BestCarSelection; i++)
             {
-                int randomCollumn = Random.Range(0, mutateWeights.ColumnCount);
-                int randomRow = Random.Range(0, mutateWeights.RowCount);
-                mutateWeights[randomRow, randomCollumn] = Mathf.Clamp(mutateWeights[randomRow, randomCollumn] + Random.Range(-1f, 1f), -1f, 1f);
-            }
+                //clone the best ones
+                BestNeuronalNetworks.Add(population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount));
 
-            return mutateWeights;
+                //avoid changing the original array
+                newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
+                newPopulation[naturallySelected].Fitness = 0;
+                naturallySelected++;
+
+                int ChancesOfSelection = Mathf.RoundToInt(population[i].Fitness * 10);
+
+                for (int c = 0; c < ChancesOfSelection; c++)
+                {
+                    genePool.Add(i);
+                }
+            }
+            return newPopulation;
         }
 
         private void PopulationCrossover(NeuronalNetwork[] newPopulation)
@@ -251,28 +279,36 @@ namespace RT.NeuronalNetwork
             }
         }
 
-        private NeuronalNetwork[] PickBestPopulation()
+        private void PopulationMutate(NeuronalNetwork[] newPopulation)
         {
-            NeuronalNetwork[] newPopulation = new NeuronalNetwork[InitialPopulation];
-            //pick best
-            for (int i = 0; i < BestCarSelection; i++)
+            //get the children and add a chance for mutation
+            for (int i = 0; i < naturallySelected; i++)
             {
-                //clone the best ones
-                BestNeuronalNetworks.Add(population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount));
-
-                //avoid changing the original array
-                newPopulation[naturallySelected] = population[i].CopyNeuronalNetwork(carController.Layers, carController.Neurons, carController.InputLayerCount, carController.OutputLayerCount);
-                newPopulation[naturallySelected].Fitness = 0;
-                naturallySelected++;
-
-                int ChancesOfSelection = Mathf.RoundToInt(population[i].Fitness * 10);
-
-                for (int c = 0; c < ChancesOfSelection; c++)
+                for (int j = 0; j < newPopulation[i].Weights.Count; j++)
                 {
-                    genePool.Add(i);
+                    if (Random.Range(0f, 1f) < MutationRate)
+                    {
+                        newPopulation[i].Weights[j] = MutateWeights(newPopulation[i].Weights[j]);
+                    }
                 }
             }
-            return newPopulation;
+        }
+
+        private Matrix<float> MutateWeights(Matrix<float> weight)
+        {
+            //get a random amount of values dividing by 7 to not pick to manu or to little
+            int randomPoints = Random.Range(1, (weight.RowCount * weight.ColumnCount) / 7);
+
+            Matrix<float> mutateWeights = weight;
+
+            for (int i = 0; i < randomPoints; i++)
+            {
+                int randomCollumn = Random.Range(0, mutateWeights.ColumnCount);
+                int randomRow = Random.Range(0, mutateWeights.RowCount);
+                mutateWeights[randomRow, randomCollumn] = Mathf.Clamp(mutateWeights[randomRow, randomCollumn] + Random.Range(-1f, 1f), -1f, 1f);
+            }
+
+            return mutateWeights;
         }
 
         private void ShortPopulation()
