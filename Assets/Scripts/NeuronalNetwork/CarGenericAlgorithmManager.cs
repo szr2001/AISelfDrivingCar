@@ -285,12 +285,12 @@ namespace RT.NeuronalNetwork
     public class CarGenerationData
     {
         public NeuronalData[] GenerationData;
-        public int CurrentGeneration;
+        public int GenerationNumber;
 
         public CarGenerationData(NeuronalData[] generationData, int currentGeneration)
         {
             GenerationData = generationData;
-            CurrentGeneration = currentGeneration;
+            GenerationNumber = currentGeneration;
         }
     }
 }

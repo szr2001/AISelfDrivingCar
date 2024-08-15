@@ -25,12 +25,10 @@ namespace RT.NeuronalNetwork
 
         public void SaveGeneration()
         {
-            if (Directory.Exists(SavePath + $"\\{FileName}"))
+            if (Directory.Exists(@$"{SavePath}/{FileName}"))
             {
-                Directory.CreateDirectory(SavePath + $"\\{FileName}");
+                Directory.CreateDirectory(@$"{SavePath}/{FileName}");
             }
-            SavePath = SavePath + $"\\{FileName}";
-            string ID = DateTime.Now.Ticks.ToString();
 
             List<NeuronalData> neuronalDatas = new();
 
@@ -42,14 +40,25 @@ namespace RT.NeuronalNetwork
             CarGenerationData carGeneration = new(neuronalDatas.ToArray(), carAlgorithmManager.currentGeneration);
 
             string json = JsonConvert.SerializeObject(carGeneration, Formatting.Indented);
-            File.WriteAllText($"{FileName}_{ID}.json", json);
+            File.WriteAllText(@$"{SavePath}/{FileName}.json", json);
 
-            Debug.Log($"SAVED best of generation {carGeneration.CurrentGeneration}");
+            Debug.Log($"SAVED best of generation {carGeneration.GenerationNumber}");
         }
 
         public void LoadGeneration()
         {
-            Debug.Log($"LOADED generation");
+            Debug.Log(@$"{SavePath}/{FileName}.json");
+            if (File.Exists(@$"{SavePath}/{FileName}.json"))
+            {
+                string json = File.ReadAllText(@$"{SavePath}/{FileName}.json");
+                CarGenerationData LoadedGenerationData = JsonConvert.DeserializeObject<CarGenerationData>(json);
+                Debug.Log(LoadedGenerationData.GenerationNumber);
+                Debug.Log($"LOADED generation");
+            }
+            else
+            {
+                Debug.Log($"No file to Load");
+            }
         }
     }
 }

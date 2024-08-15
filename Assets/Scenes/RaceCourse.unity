@@ -804,7 +804,6 @@ MonoBehaviour:
       m_Calls: []
   BestCarSelection: 8
   NumberToCrossover: 39
-  GenerationBestFitness: []
 --- !u!4 &50006287
 Transform:
   m_ObjectHideFlags: 0
@@ -832,7 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7065c0df154356b49af085e5b4198aa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: GoodGeneration
+  FileName: CarGeneration
 --- !u!114 &50006289
 MonoBehaviour:
   m_ObjectHideFlags: 0
